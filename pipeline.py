@@ -8,6 +8,7 @@ def start_pipeline(path):
     print("pipeline started")
     dataset_url = 'http://data.insideairbnb.com/italy/lombardia/bergamo/2020-12-31/data/listings.csv.gz'
     data = pd.read_csv(dataset_url)
+    label_filecsv_truth(data)
     save_file_split(data, path)
 
 
@@ -28,18 +29,15 @@ def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
     if not os.path.exists('Dataset'):
         os.makedirs('Dataset')
-    train.to_csv(path + 'train.csv')
-    validate.to_csv(path + 'validate.csv')
-    test.to_csv(path + 'test.csv')
+        train.to_csv(path + 'train.csv')
+        validate.to_csv(path + 'validate.csv')
+        test.to_csv(path + 'test.csv')
 
-#    y = data.id
-#    X = data.drop('id', axis=1)
 
-#    X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.2)
-#    print("\nX_train:\n")
-#   print(X_train.head())
-#    print(X_train.shape)
+def label_filecsv_truth(data):
+    dataframe1 = pd.merge(data, data, left_on='id', right_on='id', suffixes=('_left', '_right'))
 
-#   print("\nX_test:\n")
-#   print(X_test.head())
-#   print(X_test.shape)
+    dataframe1.insert(0, "Label", 1, True)
+    print(dataframe1)
+
+
