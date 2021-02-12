@@ -3,15 +3,15 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 
-def start_pipeline():
+def start_pipeline(path):
     print("pipeline started")
     dataset_url = 'http://data.insideairbnb.com/italy/lombardia/bergamo/2020-12-31/data/listings.csv.gz'
     data = pd.read_csv(dataset_url)
-    print(data.head())
+    save_file_split(data, path)
 
 
 def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=None):
-    #Randomizziamo per rendere la divisione del dataset reale
+    # Randomizziamo per rendere la divisione del dataset reale
     np.random.seed(seed)
     perm = np.random.permutation(data.index)
     m = len(data.index)
@@ -22,13 +22,12 @@ def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=
     test = data.iloc[perm[validate_end:]]
     return train, validate, test
 
+
 def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
     train.to_csv(path + 'train.csv')
     validate.to_csv(path + 'validate.csv')
     test.to_csv(path + 'test.csv')
-
-
 
 #    y = data.id
 #    X = data.drop('id', axis=1)
