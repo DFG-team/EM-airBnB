@@ -35,9 +35,12 @@ def save_file_split(data, path):
 
 
 def label_filecsv_truth(data):
-    dataframe1 = pd.merge(data, data, left_on='id', right_on='id', suffixes=('_left', '_right'))
+    dataframe1 = pd.merge(data, data, left_on=['host_id', 'latitude', 'longitude'],
+                          right_on=['host_id', 'latitude', 'longitude'],
+                          suffixes=('_left', '_right'))
+    data = dataframe1[dataframe1["id_left"] != dataframe1["id_right"]]
+    data.insert(0, "Label", 1, True)
+    data.rename(columns={'id_left': 'id'}, inplace=True)
 
-    dataframe1.insert(0, "Label", 1, True)
-    print(dataframe1)
-
-
+    print(data)
+    return data
