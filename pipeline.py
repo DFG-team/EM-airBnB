@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 from sklearn.model_selection import train_test_split
 
 
@@ -25,6 +26,8 @@ def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=
 
 def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
+    if not os.path.exists('Dataset'):
+        os.makedirs('Dataset')
     train.to_csv(path + 'train.csv')
     validate.to_csv(path + 'validate.csv')
     test.to_csv(path + 'test.csv')
