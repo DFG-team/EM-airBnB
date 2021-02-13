@@ -36,9 +36,9 @@ def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
     if not os.path.exists('Dataset'):
         os.makedirs('Dataset')
-        train.to_csv(path + 'train.csv')
-        validate.to_csv(path + 'validate.csv')
-        test.to_csv(path + 'test.csv')
+        train.to_csv(path + 'train.csv', index=False, header=True)
+        validate.to_csv(path + 'validate.csv', index=False, header=True)
+        test.to_csv(path + 'test.csv', index=False, header=True)
 
 
 def label_filecsv_truth(data):
@@ -63,18 +63,19 @@ def label_temp(data2):
     data2.insert(1, "label", 1, True)
 
     data2.rename(columns={'ID_1': 'id'}, inplace=True)
-    data2.rename(columns={"NAME_1": 'name_left', "HOSTNAME_1": 'hostname_left', "NEIGHB_1": 'neighb_left',
-                          "LATITUDE_1": 'latitude_left',
-                          "LONGITUDE_1": 'longitude_left', "ROOM_TYPE_1": 'room_type_left', "ID_2": 'id_right',
-                          "NAME_2": 'name_right', "HOSTNAME_2": 'hostname_right',
-                          "NEIGHB_2": 'neighb_right', "LATITUDE_2": 'latitude_right',
-                          "LONGITUDE_2": 'longitude_right', "ROOM_TYPE_2": 'room_type_right'}, inplace=True)
-    data2 = data2.reindex(columns=['id', 'label', 'name_left', 'hostname_left', 'neighb_left', 'latitude_left',
-                                   'longitude_left', 'room_type_left', 'name_right', 'hostname_right',
-                                   'neighb_right', 'latitude_right',
-                                   'longitude_right', 'room_type_right'])
+    data2.rename(columns={"NAME_1": 'left_name', "HOSTNAME_1": 'left_hostname', "NEIGHB_1": 'left_neighb',
+                          "LATITUDE_1": 'left_latitude',
+                          "LONGITUDE_1": 'left_longitude', "ROOM_TYPE_1": 'left_room_type', "ID_2": 'right_id',
+                          "NAME_2": 'right_name', "HOSTNAME_2": 'right_hostname',
+                          "NEIGHB_2": 'right_neighb', "LATITUDE_2": 'right_latitude',
+                          "LONGITUDE_2": 'right_longitude', "ROOM_TYPE_2": 'right_room_type'}, inplace=True)
+
+    data2 = data2.reindex(columns=['id', 'label', 'left_name', 'left_hostname', 'left_neighb', 'left_latitude',
+                                   'left_longitude', 'left_room_type', 'right_name', 'right_hostname',
+                                   'right_neighb', 'right_latitude',
+                                   'right_longitude', 'right_room_type'])
 
     print(data2.columns)
 
     return data2
-    #data2 = data2.drop(index=1)
+    # data2 = data2.drop(index=1)
