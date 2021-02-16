@@ -10,8 +10,8 @@ def start_pipeline(path):
     data = pd.read_csv(dataset_url)
     realdata = filecsv_label_with_1(data)
     pd.set_option('display.max_columns', None)
-    for col in realdata.columns:
-        print(col)
+    #for col in realdata.columns:
+       # print(col)
     save_file_split(realdata, path)
     visualize_truth_csv(data, path)
 
@@ -57,7 +57,7 @@ def filecsv_label_with_1(data):
     data.rename(columns={'beds': 'beds_left'}, inplace=True)
     data.insert(112, "beds_right", datasupport, True)
 
-    data=rename_columuns(data)
+    data=rename_columuns2(data)
     return data
 
 def rename_columuns(data):
@@ -76,6 +76,30 @@ def rename_columuns(data):
                 data.rename(columns={col:new_col})
     return data
 
+def rename_columuns2(data):
+    datasupp1= data[['id','label']]
+    datasupp2= data.loc[:,'listing_url_left':'reviews_per_month_left']
+    datasupp3= data.loc[:,'id_right':'reviews_per_month_right']
+
+    for col in datasupp2.columns:
+        if "_left" in col:
+           datasupp2 = datasupp2.add_prefix('left_')
+           datasupp2.columns = datasupp2.columns.str.replace('_left','')
+
+    for col in datasupp3.columns:
+        if "_right" in col:
+            datasupp3 = datasupp3.add_prefix('right_')
+            datasupp3.columns = datasupp3.columns.str.replace('_right','')
+
+
+    print(datasupp2.columns)
+    print(datasupp3.columns)
+
+    concatenateFrames = [datasupp1, datasupp2 , datasupp3]
+    result = pd.concat(concatenateFrames, ignore_index=True)
+
+
+    return result
 
 
 def filecsv_label_with_0(data):
