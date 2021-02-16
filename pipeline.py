@@ -96,7 +96,7 @@ def rename_columuns2(data):
     print(datasupp3.columns)
 
     concatenateFrames = [datasupp1, datasupp2 , datasupp3]
-    result = pd.concat(concatenateFrames, ignore_index=True)
+    result = pd.concat(concatenateFrames,axis=1)
 
 
     return result
@@ -138,7 +138,7 @@ def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=
 
 def visualize_truth_csv(data, path):
     df_groundtruth = filecsv_label_with_1(data)
-    df_groundtruth = df_groundtruth[['id', 'label', 'listing_url_left', 'listing_url_right']]
+    df_groundtruth = df_groundtruth[['id', 'label', 'left_listing_url', 'right_listing_url']]
     df_groundtruth.to_csv(path + 'df_groundtruth.csv', index=False, header=True)
 
 
