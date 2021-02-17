@@ -3,13 +3,14 @@ import numpy as np
 import os
 
 
-def start_pipeline(path):
+def start_pipeline_summary(path):
     pd.options.mode.chained_assignment = None  # default='warn'
     print("pipeline started")
-    dataset_url = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12/data/listings.csv.gz'
+    dataset_url = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12/visualisations' \
+                  '/listings.csv '
     data = pd.read_csv(dataset_url)
     realdata = merge_dataframe(data)
-    pd.set_option('display.max_columns', None)
+    # pd.set_option('display.max_columns', None)
     # for col in realdata.columns:
     # print(col)
     save_file_split(realdata, path)
@@ -17,42 +18,31 @@ def start_pipeline(path):
 
 
 def filecsv_label_with_1(data):
-    dataframe1 = pd.merge(data, data, left_on=['host_id', 'latitude', 'longitude', 'bathrooms', 'bedrooms', 'beds'],
-                          right_on=['host_id', 'latitude', 'longitude', 'bathrooms', 'bedrooms', 'beds'],
+    dataframe1 = pd.merge(data, data, left_on=['host_id', 'latitude', 'longitude'],
+                          right_on=['host_id', 'latitude', 'longitude'],
                           suffixes=('_left', '_right'))
 
     data = dataframe1[dataframe1["id_left"] != dataframe1["id_right"]]
-    data.insert(1, "label", 1, True)
+    data.insert(0, "label", 1, True)
 
     # Rinomino le variabili di join
     # Utilizzo il numero delle colonne per classificare come right i valori duplicati
     # poichè per i valori coinvolti nel merge il suffisso non è stato applicato
     datasupport = data['host_id'].copy()
     data.rename(columns={'host_id': 'host_id_left'}, inplace=True)
-    data.insert(83, "host_id_right", datasupport, True)
+    data.insert(19, "host_id_right", datasupport, True)
 
     datasupport = data['latitude'].copy()
     data.rename(columns={'latitude': 'latitude_left'}, inplace=True)
-    data.insert(104, "latitude_right", datasupport, True)
+    data.insert(23, "latitude_right", datasupport, True)
 
     datasupport = data['longitude'].copy()
     data.rename(columns={'longitude': 'longitude_left'}, inplace=True)
-    data.insert(105, "longitude_right", datasupport, True)
-
-    datasupport = data['bathrooms'].copy()
-    data.rename(columns={'bathrooms': 'bathrooms_left'}, inplace=True)
-    data.insert(109, "bathrooms_right", datasupport, True)
-
-    datasupport = data['bedrooms'].copy()
-    data.rename(columns={'bedrooms': 'bedrooms_left'}, inplace=True)
-    data.insert(111, "bedrooms_right", datasupport, True)
-
-    datasupport = data['beds'].copy()
-    data.rename(columns={'beds': 'beds_left'}, inplace=True)
-    data.insert(112, "beds_right", datasupport, True)
+    data.insert(24, "longitude_right", datasupport, True)
 
     data = rename_columuns2(data)
-    print(data)
+
+    # print(data)
 
     return data
 
@@ -72,8 +62,8 @@ def rename_columuns2(data):
             datasupp3 = datasupp3.add_prefix('right_')
             datasupp3.columns = datasupp3.columns.str.replace('_right', '')
 
-    print(datasupp2.columns)
-    print(datasupp3.columns)
+    # print(datasupp2.columns)
+    #  print(datasupp3.columns)
 
     concatenateFrames = [datasupp1, datasupp2, datasupp3]
     result = pd.concat(concatenateFrames, axis=1)
@@ -82,12 +72,12 @@ def rename_columuns2(data):
 
 
 def filecsv_label_with_0(data):
-    dataframe1 = pd.merge(data, data, left_on=['latitude', 'room_type', 'bathrooms', 'price'],
-                          right_on=['latitude', 'room_type', 'bathrooms', 'price'],
+    dataframe1 = pd.merge(data, data, left_on=['latitude', 'room_type', 'price'],
+                          right_on=['latitude', 'room_type', 'price'],
                           suffixes=('_left', '_right'))
 
     data = dataframe1[dataframe1["id_left"] != dataframe1["id_right"]]
-    data.insert(1, "label", 0, True)
+    data.insert(0, "label", 0, True)
 
     # Rinomino le variabili di join
     # Utilizzo il numero delle colonne per classificare come right i valori duplicati
@@ -95,30 +85,59 @@ def filecsv_label_with_0(data):
 
     datasupport = data['latitude'].copy()
     data.rename(columns={'latitude': 'latitude_left'}, inplace=True)
-    data.insert(104, "latitude_right", datasupport, True)
+    data.insert(23, "latitude_right", datasupport, True)
 
     datasupport = data['room_type'].copy()
     data.rename(columns={'room_type': 'room_type_left'}, inplace=True)
-    data.insert(107, "room_type_right", datasupport, True)
-
-    datasupport = data['bathrooms'].copy()
-    data.rename(columns={'bathrooms': 'bathrooms_left'}, inplace=True)
-    data.insert(109, "bathrooms_right", datasupport, True)
+    data.insert(25, "room_type_right", datasupport, True)
 
     datasupport = data['price'].copy()
     data.rename(columns={'price': 'price_left'}, inplace=True)
-    data.insert(114, "price_right", datasupport, True)
+    data.insert(26, "price_right", datasupport, True)
 
     data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
                 (data["longitude_left"] != data["longitude_right"])]
 
     data = rename_columuns2(data)
 
+    print(data)
+
     return data
 
 
 def filecsv_label_with_0_type2(data):
-    return
+
+    dataframe1 = pd.merge(data, data, left_on=['longitude', 'neighbourhood', 'minimum_nights'],
+                          right_on=['longitude', 'neighbourhood', 'minimum_nights'],
+                          suffixes=('_left', '_right'))
+
+    data = dataframe1[dataframe1["id_left"] != dataframe1["id_right"]]
+    data.insert(0, "label", 0, True)
+
+    # Rinomino le variabili di join
+    # Utilizzo il numero delle colonne per classificare come right i valori duplicati
+    # poichè per i valori coinvolti nel merge il suffisso non è stato applicato
+
+    datasupport = data['latitude'].copy()
+    data.rename(columns={'latitude': 'latitude_left'}, inplace=True)
+    data.insert(23, "latitude_right", datasupport, True)
+
+    datasupport = data['room_type'].copy()
+    data.rename(columns={'room_type': 'room_type_left'}, inplace=True)
+    data.insert(25, "room_type_right", datasupport, True)
+
+    datasupport = data['price'].copy()
+    data.rename(columns={'price': 'price_left'}, inplace=True)
+    data.insert(26, "price_right", datasupport, True)
+
+    data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
+                (data["longitude_left"] != data["longitude_right"])]
+
+    data = rename_columuns2(data)
+
+    print(data)
+
+    return data
 
 
 def merge_dataframe(data):
@@ -131,7 +150,7 @@ def merge_dataframe(data):
     result['id'] = range(1, len(result) + 1)
     datasupport = result['id'].copy()
     result.drop(result.columns[len(result.columns) - 1], axis=1, inplace=True)
-    result.drop('left_label', axis=1, inplace=True)
+    # result.drop('left_label', axis=1, inplace=True)
     result.insert(0, "id", datasupport, True)
 
     return result
@@ -160,5 +179,5 @@ def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=
 
 def visualize_truth_csv(data, path):
     df_groundtruth = merge_dataframe(data)
-    df_groundtruth = df_groundtruth[['id', 'label', 'left_listing_url', 'right_listing_url']]
+    df_groundtruth = df_groundtruth[['id', 'label']]
     df_groundtruth.to_csv(path + 'df_groundtruth.csv', index=False, header=True)
