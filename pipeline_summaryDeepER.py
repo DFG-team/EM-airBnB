@@ -79,19 +79,19 @@ def filecsv_label_with_0(data):
     # poichè per i valori coinvolti nel merge il suffisso non è stato applicato
 
     datasupport = data['latitude'].copy()
-    data.rename(columns={'latitude': 'latitude_left'}, inplace=True)
-    data.insert(23, "latitude_right", datasupport, True)
+    data.rename(columns={'latitude': 'latitude_ltable'}, inplace=True)
+    data.insert(23, "latitude_rtable", datasupport, True)
 
     datasupport = data['room_type'].copy()
-    data.rename(columns={'room_type': 'room_type_left'}, inplace=True)
-    data.insert(25, "room_type_right", datasupport, True)
+    data.rename(columns={'room_type': 'room_type_ltable'}, inplace=True)
+    data.insert(25, "room_type_rtable", datasupport, True)
 
     datasupport = data['price'].copy()
-    data.rename(columns={'price': 'price_left'}, inplace=True)
-    data.insert(26, "price_right", datasupport, True)
+    data.rename(columns={'price': 'price_ltable'}, inplace=True)
+    data.insert(26, "price_rtable", datasupport, True)
 
-    data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
-                (data["longitude_left"] != data["longitude_right"])]
+    data = data[(data["host_id_ltable"] != data["host_id_rtable"]) | (data["latitude_ltable"] != data["latitude_rtable"]) |
+                (data["longitude_ltable"] != data["longitude_rtable"])]
 
     data = rename_columuns(data)
 
@@ -104,33 +104,30 @@ def filecsv_label_with_0_type2(data):
 
     dataframe1 = pd.merge(data, data, left_on=['longitude', 'neighbourhood', 'minimum_nights'],
                           right_on=['longitude', 'neighbourhood', 'minimum_nights'],
-                          suffixes=('_left', '_right'))
+                          suffixes=('_ltable', '_rtable'))
 
-    data = dataframe1[dataframe1["id_left"] != dataframe1["id_right"]]
+    data = dataframe1[dataframe1["id_ltable"] != dataframe1["id_rtable"]]
     data.insert(0, "label", 0, True)
-
     # Rinomino le variabili di join
     # Utilizzo il numero delle colonne per classificare come right i valori duplicati
     # poichè per i valori coinvolti nel merge il suffisso non è stato applicato
 
-    datasupport = data['latitude'].copy()
-    data.rename(columns={'latitude': 'latitude_left'}, inplace=True)
-    data.insert(23, "latitude_right", datasupport, True)
+    datasupport = data['longitude'].copy()
+    data.rename(columns={'longitude': 'longitude_ltable'}, inplace=True)
+    data.insert(23, "longitude_rtable", datasupport, True)
 
-    datasupport = data['room_type'].copy()
-    data.rename(columns={'room_type': 'room_type_left'}, inplace=True)
-    data.insert(25, "room_type_right", datasupport, True)
+    datasupport = data['neighbourhood'].copy()
+    data.rename(columns={'neighbourhood': 'neighbourhood_ltable'}, inplace=True)
+    data.insert(22, "neighbourhood_rtable", datasupport, True)
 
-    datasupport = data['price'].copy()
-    data.rename(columns={'price': 'price_left'}, inplace=True)
-    data.insert(26, "price_right", datasupport, True)
+    datasupport = data['minimum_nights'].copy()
+    data.rename(columns={'minimum_nights': 'minimum_nights_ltable'}, inplace=True)
+    data.insert(27, "minimum_nights_rtable", datasupport, True)
 
-    data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
-                (data["longitude_left"] != data["longitude_right"])]
+    data = data[(data["host_id_ltable"] != data["host_id_rtable"]) | (data["latitude_ltable"] != data["latitude_rtable"]) |
+            (data["longitude_ltable"] != data["longitude_rtable"])]
 
     data = rename_columuns(data)
-
-    print(data)
 
     return data
 
@@ -152,8 +149,8 @@ def merge_dataframe(data):
 
 def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
-    if not os.path.exists('DatasetRome'):
-        os.makedirs('DatasetRome')
+    if not os.path.exists('DatasetRomeDeepER'):
+        os.makedirs('DatasetRomeDeepER')
         train.to_csv(path + 'train.csv', index=False, header=True)
         validate.to_csv(path + 'validate.csv', index=False, header=True)
         test.to_csv(path + 'test.csv', index=False, header=True)
