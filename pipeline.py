@@ -10,8 +10,7 @@ def start_pipeline(path):
     data = pd.read_csv(dataset_url)
     realdata = merge_dataframe(data)
     pd.set_option('display.max_columns', None)
-    # for col in realdata.columns:
-    # print(col)
+
     save_file_split(realdata, path)
     visualize_truth_csv(data, path)
 

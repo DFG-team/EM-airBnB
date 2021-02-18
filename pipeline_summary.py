@@ -1,19 +1,16 @@
 import pandas as pd
-import numpy as np
 import os
 
 
 def start_pipeline_summary(path):
     pd.options.mode.chained_assignment = None  # default='warn'
     print("pipeline started")
-    dataset_url_amsterdam = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12/visualisations' \
-                            '/listings.csv '
-    dataset_url_rome ='http://data.insideairbnb.com/italy/lazio/rome/2021-01-13/visualisations/listings.csv'
+    dataset_url_amsterdam = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12' \
+                            '/visualisations/listings.csv '
+    dataset_url_rome = 'http://data.insideairbnb.com/italy/lazio/rome/2021-01-13/visualisations/listings.csv'
     data = pd.read_csv(dataset_url_rome)
     realdata = merge_dataframe(data)
-    # pd.set_option('display.max_columns', None)
-    # for col in realdata.columns:
-    # print(col)
+
     save_file_split(realdata, path)
     visualize_truth_csv(data, path)
 
@@ -43,8 +40,6 @@ def filecsv_label_with_1(data):
 
     data = rename_columuns2(data)
 
-    # print(data)
-
     return data
 
 
@@ -63,8 +58,6 @@ def rename_columuns2(data):
             datasupp3 = datasupp3.add_prefix('right_')
             datasupp3.columns = datasupp3.columns.str.replace('_right', '')
 
-    # print(datasupp2.columns)
-    #  print(datasupp3.columns)
 
     concatenateFrames = [datasupp1, datasupp2, datasupp3]
     result = pd.concat(concatenateFrames, axis=1)
@@ -151,7 +144,6 @@ def merge_dataframe(data):
     result['id'] = range(1, len(result) + 1)
     datasupport = result['id'].copy()
     result.drop(result.columns[len(result.columns) - 1], axis=1, inplace=True)
-    # result.drop('left_label', axis=1, inplace=True)
     result.insert(0, "id", datasupport, True)
 
     return result

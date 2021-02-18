@@ -13,10 +13,10 @@ def start_pipeline2(path):
     data2 = label_temp(data2)
     save_file_split(data2, path)
     print(data2)
-    # data = pd.read_csv(dataset_url)
-    # label_filecsv_truth(data)
-    # visualize_truth_csv(data, path)
-    # save_file_split(data, path)
+    data = pd.read_csv(dataset_url)
+    label_filecsv_truth(data)
+    visualize_truth_csv(data, path)
+    save_file_split(data, path)
 
 
 def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=None):
@@ -78,4 +78,3 @@ def label_temp(data2):
     print(data2.columns)
 
     return data2
-    # data2 = data2.drop(index=1)
