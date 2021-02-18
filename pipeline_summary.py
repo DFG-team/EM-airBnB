@@ -6,13 +6,18 @@ def start_pipeline_summary(path):
     pd.options.mode.chained_assignment = None  # default='warn'
     print("pipeline started")
     dataset_url_amsterdam = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12' \
-                            '/visualisations/listings.csv '
+                            '/visualisations/listings.csv'
     dataset_url_rome = 'http://data.insideairbnb.com/italy/lazio/rome/2021-01-13/visualisations/listings.csv'
-    data = pd.read_csv(dataset_url_rome)
-    realdata = merge_dataframe(data)
-
-    save_file_split(realdata, path)
-    visualize_truth_csv(data, path)
+    data_amsterdam = pd.read_csv(dataset_url_amsterdam)
+    data_rome = pd.read_csv(dataset_url_rome)
+    realdata_amsterdam = merge_dataframe(data_amsterdam)
+    realdata_rome = merge_dataframe(data_rome)
+    save_file_split(realdata_amsterdam, path)
+    realdata_rome.to_csv(path + 'test_rome.csv', index=False, header=True)
+    dfs = [pd.read_csv(path + 'test.csv'), pd.read_csv(path + 'test_rome.csv')]
+    realdata = pd.concat(dfs, ignore_index=True)
+    realdata.to_csv(path + 'test.csv')
+    visualize_truth_csv(data_amsterdam, path)
 
 
 
@@ -59,7 +64,6 @@ def rename_columuns(data):
             datasupp3 = datasupp3.add_prefix('right_')
             datasupp3.columns = datasupp3.columns.str.replace('_right', '')
 
-
     concatenateFrames = [datasupp1, datasupp2, datasupp3]
     result = pd.concat(concatenateFrames, axis=1)
 
@@ -95,12 +99,10 @@ def filecsv_label_with_0_type1(data):
 
     data = rename_columuns(data)
 
-
     return data
 
 
 def filecsv_label_with_0_type2(data):
-
     dataframe1 = pd.merge(data, data, left_on=['longitude', 'neighbourhood', 'minimum_nights'],
                           right_on=['longitude', 'neighbourhood', 'minimum_nights'],
                           suffixes=('_left', '_right'))
@@ -149,8 +151,8 @@ def merge_dataframe(data):
 
 def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
-    if not os.path.exists('DatasetRome'):
-        os.makedirs('DatasetRome')
+    if not os.path.exists('Dataset'):
+        os.makedirs('Dataset')
         train.to_csv(path + 'train.csv', index=False, header=True)
         validate.to_csv(path + 'validate.csv', index=False, header=True)
         test.to_csv(path + 'test.csv', index=False, header=True)

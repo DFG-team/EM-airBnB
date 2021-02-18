@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import gensim.downloader as api
-from deepER_start import start_model
+import models.DeepER as dp
 
 def start_pipeline_with_DeepER(path):
 
@@ -15,7 +15,6 @@ def start_pipeline_with_DeepER(path):
     realdata = merge_dataframe(data)
 
     save_file_split(realdata, path)
-    start_model(path)
 
 def filecsv_label_with_1(data):
     dataframe1 = pd.merge(data, data, left_on=['host_id', 'latitude', 'longitude'],
@@ -47,8 +46,8 @@ def filecsv_label_with_1(data):
 
 def rename_columuns(data):
     datasupp1 = data[['label']]
-    datasupp2 = data.loc[:, 'id_ltable':'reviews_per_month_ltable']
-    datasupp3 = data.loc[:, 'id_rtable':'reviews_per_month_rtable']
+    datasupp2 = data.loc[:, 'id_ltable':'reviews_per_month_left']
+    datasupp3 = data.loc[:, 'id_rtable':'reviews_per_month_right']
 
     for col in datasupp2.columns:
         if "_ltable" in col:
