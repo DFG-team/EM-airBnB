@@ -30,5 +30,5 @@ def start_model(train_df, valid_df, test_df):
     model = dp.init_DeepER_model(emb_dim)
     model = dp.train_model_ER(to_deeper_data(train_df), model, embeddings_model, tokenizer)
     
-    dp.model_statistics(test_df, model, embeddings_model, tokenizer)S
+    dp.model_statistics(test_df, model, embeddings_model, tokenizer)
     
