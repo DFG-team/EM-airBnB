@@ -8,6 +8,8 @@ def start_pipeline_summary(path):
     dataset_url_amsterdam = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12' \
                             '/visualisations/listings.csv'
     dataset_url_rome = 'http://data.insideairbnb.com/italy/lazio/rome/2021-01-13/visualisations/listings.csv'
+    dataset_url_london = 'http://data.insideairbnb.com/united-kingdom/england/london/2021-01-11/visualisations/listings.csv'
+    dataset_url_dublin = 'http://data.insideairbnb.com/ireland/leinster/dublin/2021-02-10/visualisations/listings.csv'
     data_amsterdam = pd.read_csv(dataset_url_amsterdam)
     data_rome = pd.read_csv(dataset_url_rome)
     realdata_amsterdam = merge_dataframe(data_amsterdam)
