@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import gensim.downloader as api
-import models.DeepER as dp
+from deepER_start import start_model
 
 def start_pipeline_with_DeepER(path):
 
@@ -15,6 +15,7 @@ def start_pipeline_with_DeepER(path):
     realdata = merge_dataframe(data)
 
     save_file_split(realdata, path)
+    start_model(path)
 
 def filecsv_label_with_1(data):
     dataframe1 = pd.merge(data, data, left_on=['host_id', 'latitude', 'longitude'],

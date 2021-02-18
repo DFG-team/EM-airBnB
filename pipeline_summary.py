@@ -15,6 +15,7 @@ def start_pipeline_summary(path):
     visualize_truth_csv(data, path)
 
 
+
 def filecsv_label_with_1(data):
     dataframe1 = pd.merge(data, data, left_on=['host_id', 'latitude', 'longitude'],
                           right_on=['host_id', 'latitude', 'longitude'],
