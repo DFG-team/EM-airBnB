@@ -65,7 +65,7 @@ def rename_columuns(data):
     return result
 
 
-def filecsv_label_with_0(data):
+def filecsv_label_with_0_type1(data):
     dataframe1 = pd.merge(data, data, left_on=['latitude', 'room_type', 'price'],
                           right_on=['latitude', 'room_type', 'price'],
                           suffixes=('_left', '_right'))
@@ -94,7 +94,6 @@ def filecsv_label_with_0(data):
 
     data = rename_columuns(data)
 
-    print(data)
 
     return data
 
@@ -107,38 +106,36 @@ def filecsv_label_with_0_type2(data):
 
     data = dataframe1[dataframe1["id_left"] != dataframe1["id_right"]]
     data.insert(0, "label", 0, True)
-
     # Rinomino le variabili di join
     # Utilizzo il numero delle colonne per classificare come right i valori duplicati
     # poichè per i valori coinvolti nel merge il suffisso non è stato applicato
 
-    datasupport = data['latitude'].copy()
-    data.rename(columns={'latitude': 'latitude_left'}, inplace=True)
-    data.insert(23, "latitude_right", datasupport, True)
+    datasupport = data['longitude'].copy()
+    data.rename(columns={'longitude': 'longitude_left'}, inplace=True)
+    data.insert(23, "longitude_right", datasupport, True)
 
-    datasupport = data['room_type'].copy()
-    data.rename(columns={'room_type': 'room_type_left'}, inplace=True)
-    data.insert(25, "room_type_right", datasupport, True)
+    datasupport = data['neighbourhood'].copy()
+    data.rename(columns={'neighbourhood': 'neighbourhood_left'}, inplace=True)
+    data.insert(22, "neighbourhood_right", datasupport, True)
 
-    datasupport = data['price'].copy()
-    data.rename(columns={'price': 'price_left'}, inplace=True)
-    data.insert(26, "price_right", datasupport, True)
+    datasupport = data['minimum_nights'].copy()
+    data.rename(columns={'minimum_nights': 'minimum_nights_left'}, inplace=True)
+    data.insert(27, "minimum_nights_right", datasupport, True)
 
     data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
                 (data["longitude_left"] != data["longitude_right"])]
 
     data = rename_columuns(data)
 
-    print(data)
-
     return data
 
 
 def merge_dataframe(data):
     frame1 = filecsv_label_with_1(data)
-    frame2 = filecsv_label_with_0(data)
+    frame2 = filecsv_label_with_0_type1(data)
+    frame3 = filecsv_label_with_0_type2(data)
 
-    mainFrame = [frame1, frame2]
+    mainFrame = [frame1, frame2, frame3]
     result = pd.concat(mainFrame)
 
     result['id'] = range(1, len(result) + 1)
