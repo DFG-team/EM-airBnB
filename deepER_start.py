@@ -21,7 +21,7 @@ def to_deeper_data(df: pd.DataFrame):
 def start_model(path):
     train_df = pd.read_csv(path + 'train.csv')
     valid_df = pd.read_csv(path + 'validate.csv')
-    test_df = pd.read_csv(path + 'test.csv')
+    test_df = pd.read_csv(path + 'test_rome.csv')
 
     if not os.path.exists('models/glove.6B.50d.txt'):
         word_vectors = api.load("glove-wiki-gigaword-50")

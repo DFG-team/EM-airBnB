@@ -24,8 +24,11 @@ def start_pipeline_with_DeepER(path):
     # merging cities data frames
     realdata_amsterdam = merge_dataframe(data_amsterdam)
     realdata_rome = merge_dataframe(data_rome)
+    realdata_rome = realdata_rome.sample(frac=1).reset_index(drop=True)
     realdata_london = merge_dataframe(data_london)
+    realdata_london = realdata_london.sample(frac=1).reset_index(drop=True)
     realdata_dublin = merge_dataframe(data_dublin)
+    realdata_dublin = realdata_dublin.sample(frac=1).reset_index(drop=True)
 
     # split amsterdam data frame for training model
     save_file_split(realdata_amsterdam, path)
@@ -86,7 +89,7 @@ def rename_columuns(data):
     return result
 
 
-def filecsv_label_with_0(data):
+def filecsv_label_with_0_type1(data):
     dataframe1 = pd.merge(data, data, left_on=['latitude', 'room_type', 'price'],
                           right_on=['latitude', 'room_type', 'price'],
                           suffixes=('_ltable', '_rtable'))
@@ -155,9 +158,10 @@ def filecsv_label_with_0_type2(data):
 
 def merge_dataframe(data):
     frame1 = filecsv_label_with_1(data)
-    frame2 = filecsv_label_with_0(data)
+    frame2 = filecsv_label_with_0_type1(data)
+    frame3 = filecsv_label_with_0_type2(data)
 
-    mainFrame = [frame1, frame2]
+    mainFrame = [frame1, frame2, frame3]
     result = pd.concat(mainFrame)
 
     result['id'] = range(1, len(result) + 1)
@@ -170,8 +174,8 @@ def merge_dataframe(data):
 
 def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
-    if not os.path.exists('DatasetRomeDeepER'):
-        os.makedirs('DatasetRomeDeepER')
+    if not os.path.exists('DatasetDeepER'):
+        os.makedirs('DatasetDeepER')
         train.to_csv(path + 'train.csv', index=False, header=True)
         validate.to_csv(path + 'validate.csv', index=False, header=True)
         test.to_csv(path + 'test.csv', index=False, header=True)

@@ -21,8 +21,11 @@ def start_pipeline_summary(path):
     # merging cities data frames
     realdata_amsterdam = merge_dataframe(data_amsterdam)
     realdata_rome = merge_dataframe(data_rome)
+    realdata_rome.sample(frac=1).reset_index(drop=True)
     realdata_london = merge_dataframe(data_london)
+    realdata_london.sample(frac=1).reset_index(drop=True)
     realdata_dublin = merge_dataframe(data_dublin)
+    realdata_dublin.sample(frac=1).reset_index(drop=True)
 
     # split amsterdam data frame for training model
     save_file_split(realdata_amsterdam, path)
@@ -165,8 +168,8 @@ def merge_dataframe(data):
 
 def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
-    if not os.path.exists('Dataset'):
-        os.makedirs('Dataset')
+    if not os.path.exists('DatasetDeepMatcher'):
+        os.makedirs('DatasetDeepMatcher')
         train.to_csv(path + 'train.csv', index=False, header=True)
         validate.to_csv(path + 'validate.csv', index=False, header=True)
         test.to_csv(path + 'test.csv', index=False, header=True)
