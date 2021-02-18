@@ -118,6 +118,36 @@ def filecsv_label_with_0(data):
 
 
 def filecsv_label_with_0_type2(data):
+    dataframe1 = pd.merge(data, data, left_on=['longitude', 'neighbourhood', 'minimum_nights'],
+                          right_on=['longitude', 'neighbourhood', 'minimum_nights'],
+                          suffixes=('_left', '_right'))
+
+    data = dataframe1[dataframe1["id_left"] != dataframe1["id_right"]]
+    data.insert(0, "label", 0, True)
+
+    # Rinomino le variabili di join
+    # Utilizzo il numero delle colonne per classificare come right i valori duplicati
+    # poichè per i valori coinvolti nel merge il suffisso non è stato applicato
+
+    datasupport = data['latitude'].copy()
+    data.rename(columns={'latitude': 'latitude_left'}, inplace=True)
+    data.insert(23, "latitude_right", datasupport, True)
+
+    datasupport = data['room_type'].copy()
+    data.rename(columns={'room_type': 'room_type_left'}, inplace=True)
+    data.insert(25, "room_type_right", datasupport, True)
+
+    datasupport = data['price'].copy()
+    data.rename(columns={'price': 'price_left'}, inplace=True)
+    data.insert(26, "price_right", datasupport, True)
+
+    data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
+                (data["longitude_left"] != data["longitude_right"])]
+
+    data = rename_columuns2(data)
+
+    print(data)
+
     return
 
 
