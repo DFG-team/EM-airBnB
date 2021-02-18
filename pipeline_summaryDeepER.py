@@ -59,7 +59,7 @@ def rename_columuns(data):
     for col in datasupp3.columns:
         if "_rtable" in col:
             datasupp3 = datasupp3.add_prefix('rtable_')
-            datasupp3.columns = datasupp3.columns.str.replace('_ltable', '')
+            datasupp3.columns = datasupp3.columns.str.replace('_rtable', '')
 
 
     concatenateFrames = [datasupp1, datasupp2, datasupp3]
