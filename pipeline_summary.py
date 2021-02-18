@@ -6,9 +6,10 @@ import os
 def start_pipeline_summary(path):
     pd.options.mode.chained_assignment = None  # default='warn'
     print("pipeline started")
-    dataset_url = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12/visualisations' \
-                  '/listings.csv '
-    data = pd.read_csv(dataset_url)
+    dataset_url_amsterdam = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12/visualisations' \
+                            '/listings.csv '
+    dataset_url_rome ='http://data.insideairbnb.com/italy/lazio/rome/2021-01-13/visualisations/listings.csv'
+    data = pd.read_csv(dataset_url_rome)
     realdata = merge_dataframe(data)
     # pd.set_option('display.max_columns', None)
     # for col in realdata.columns:
@@ -158,11 +159,11 @@ def merge_dataframe(data):
 
 def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
-    if not os.path.exists('DatasetAmsterdam'):
-        os.makedirs('DatasetAmsterdam')
-    train.to_csv(path + 'train.csv', index=False, header=True)
-    validate.to_csv(path + 'validate.csv', index=False, header=True)
-    test.to_csv(path + 'test.csv', index=False, header=True)
+    if not os.path.exists('DatasetRome'):
+        os.makedirs('DatasetRome')
+        train.to_csv(path + 'train.csv', index=False, header=True)
+        validate.to_csv(path + 'validate.csv', index=False, header=True)
+        test.to_csv(path + 'test.csv', index=False, header=True)
 
 
 def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=None):
