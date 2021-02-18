@@ -148,7 +148,7 @@ def filecsv_label_with_0_type2(data):
 
     print(data)
 
-    return
+    return data
 
 
 def merge_dataframe(data):
