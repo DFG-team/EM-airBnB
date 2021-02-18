@@ -3,6 +3,7 @@ import os
 import gensim.downloader as api
 import models.deepER as dp
 
+
 def to_deeper_data(df: pd.DataFrame):
     res = []
     for r in range(len(df)):
@@ -18,21 +19,19 @@ def to_deeper_data(df: pd.DataFrame):
 
 
 def start_model(path):
-    
     train_df = pd.read_csv(path + 'train.csv')
-    valid_df = pd.read_csv(path + 'valid.csv')
+    valid_df = pd.read_csv(path + 'validate.csv')
     test_df = pd.read_csv(path + 'test.csv')
-    
+
     if not os.path.exists('models/glove.6B.50d.txt'):
         word_vectors = api.load("glove-wiki-gigaword-50")
         word_vectors.save_word2vec_format('models/glove.6B.50d.txt', binary=False)
-    
+
     embeddings_index = dp.init_embeddings_index('models/glove.6B.50d.txt')
     emb_dim = len(embeddings_index['cat'])
     embeddings_model, tokenizer = dp.init_embeddings_model(embeddings_index)
-    
+
     model = dp.init_DeepER_model(emb_dim)
     model = dp.train_model_ER(to_deeper_data(train_df), model, embeddings_model, tokenizer)
-    
+
     dp.model_statistics(test_df, model, embeddings_model, tokenizer)
-    
