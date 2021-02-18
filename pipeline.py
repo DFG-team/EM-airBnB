@@ -50,13 +50,13 @@ def filecsv_label_with_1(data):
     data.rename(columns={'beds': 'beds_left'}, inplace=True)
     data.insert(112, "beds_right", datasupport, True)
 
-    data = rename_columuns2(data)
+    data = rename_columuns(data)
     print(data)
 
     return data
 
 
-def rename_columuns2(data):
+def rename_columuns(data):
     datasupp1 = data[['label']]
     datasupp2 = data.loc[:, 'id_left':'reviews_per_month_left']
     datasupp3 = data.loc[:, 'id_right':'reviews_per_month_right']
@@ -111,7 +111,7 @@ def filecsv_label_with_0(data):
     data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
                 (data["longitude_left"] != data["longitude_right"])]
 
-    data = rename_columuns2(data)
+    data = rename_columuns(data)
 
     return data
 
@@ -143,7 +143,7 @@ def filecsv_label_with_0_type2(data):
     data = data[(data["host_id_left"] != data["host_id_right"]) | (data["latitude_left"] != data["latitude_right"]) |
                 (data["longitude_left"] != data["longitude_right"])]
 
-    data = rename_columuns2(data)
+    data = rename_columuns(data)
 
     print(data)
 
