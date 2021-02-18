@@ -47,8 +47,8 @@ def filecsv_label_with_1(data):
 
 def rename_columuns(data):
     datasupp1 = data[['label']]
-    datasupp2 = data.loc[:, 'id_ltable':'reviews_per_month_left']
-    datasupp3 = data.loc[:, 'id_rtable':'reviews_per_month_right']
+    datasupp2 = data.loc[:, 'id_ltable':'reviews_per_month_ltable']
+    datasupp3 = data.loc[:, 'id_rtable':'reviews_per_month_rtable']
 
     for col in datasupp2.columns:
         if "_ltable" in col:
