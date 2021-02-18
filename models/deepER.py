@@ -1,9 +1,9 @@
 import numpy as np
-from keras.layers import Input, Embedding, LSTM, concatenate, subtract, Dense, Bidirectional, Lambda
+from keras.layers import Input, Embedding, LSTM, Dense, Bidirectional, Lambda
 from keras.models import Model, load_model
 from keras.initializers import Constant
 from keras.preprocessing.text import Tokenizer
-from keras.utils import plot_model, to_categorical
+from keras.utils import to_categorical
 from keras.preprocessing.sequence import pad_sequences
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
@@ -289,7 +289,7 @@ def model_statistics(data, model, embeddings_model, tokenizer):
         precision=-1
         recall=-1
 
-    return precision,recall,fmeasure
+    #return precision,recall,fmeasure
 
 
 def predict(data, model, embeddings_model, tokenizer):
