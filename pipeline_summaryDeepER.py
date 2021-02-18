@@ -5,25 +5,42 @@ import gensim.downloader as api
 import models.deepER as dp
 from deepER_start import start_model
 
-def start_pipeline_with_DeepER(path):
 
+def start_pipeline_with_DeepER(path):
     pd.options.mode.chained_assignment = None  # default='warn'
-    print("pipeline started")
+    print("pipeline_summary deepER started")
     dataset_url_amsterdam = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12' \
                             '/visualisations/listings.csv '
     dataset_url_rome = 'http://data.insideairbnb.com/italy/lazio/rome/2021-01-13/visualisations/listings.csv'
-    dataset_url_london = 'http://data.insideairbnb.com/united-kingdom/england/london/2021-01-11/visualisations/listings.csv'
+    dataset_url_london = 'http://data.insideairbnb.com/united-kingdom/england/london/2021-01-11/visualisations' \
+                         '/listings.csv '
     dataset_url_dublin = 'http://data.insideairbnb.com/ireland/leinster/dublin/2021-02-10/visualisations/listings.csv'
-    data = pd.read_csv(dataset_url_rome)
-    realdata = merge_dataframe(data)
+    # reading cities csv
+    data_amsterdam = pd.read_csv(dataset_url_amsterdam)
+    data_rome = pd.read_csv(dataset_url_rome)
+    data_london = pd.read_csv(dataset_url_london)
+    data_dublin = pd.read_csv(dataset_url_dublin)
 
-    save_file_split(realdata, path)
+    # merging cities data frames
+    realdata_amsterdam = merge_dataframe(data_amsterdam)
+    realdata_rome = merge_dataframe(data_rome)
+    realdata_london = merge_dataframe(data_london)
+    realdata_dublin = merge_dataframe(data_dublin)
+
+    # split amsterdam data frame for training model
+    save_file_split(realdata_amsterdam, path)
+
+    # saving test_city.csv
+    realdata_rome.to_csv(path + 'test_rome.csv', index=False, header=True)
+    realdata_london.to_csv(path + 'test_london.csv', index=False, header=True)
+    realdata_dublin.to_csv(path + 'test_dublin.csv', index=False, header=True)
     start_model(path)
+
 
 def filecsv_label_with_1(data):
     dataframe1 = pd.merge(data, data, left_on=['host_id', 'latitude', 'longitude'],
-                              right_on=['host_id', 'latitude', 'longitude'],
-                              suffixes=('_ltable', '_rtable'))
+                          right_on=['host_id', 'latitude', 'longitude'],
+                          suffixes=('_ltable', '_rtable'))
 
     data = dataframe1[dataframe1["id_ltable"] != dataframe1["id_rtable"]]
     data.insert(0, "label", 1, True)
@@ -63,7 +80,6 @@ def rename_columuns(data):
             datasupp3 = datasupp3.add_prefix('rtable_')
             datasupp3.columns = datasupp3.columns.str.replace('_rtable', '')
 
-
     concatenateFrames = [datasupp1, datasupp2, datasupp3]
     result = pd.concat(concatenateFrames, axis=1)
 
@@ -94,8 +110,9 @@ def filecsv_label_with_0(data):
     data.rename(columns={'price': 'price_ltable'}, inplace=True)
     data.insert(26, "price_rtable", datasupport, True)
 
-    data = data[(data["host_id_ltable"] != data["host_id_rtable"]) | (data["latitude_ltable"] != data["latitude_rtable"]) |
-                (data["longitude_ltable"] != data["longitude_rtable"])]
+    data = data[
+        (data["host_id_ltable"] != data["host_id_rtable"]) | (data["latitude_ltable"] != data["latitude_rtable"]) |
+        (data["longitude_ltable"] != data["longitude_rtable"])]
 
     data = rename_columuns(data)
 
@@ -105,7 +122,6 @@ def filecsv_label_with_0(data):
 
 
 def filecsv_label_with_0_type2(data):
-
     dataframe1 = pd.merge(data, data, left_on=['longitude', 'neighbourhood', 'minimum_nights'],
                           right_on=['longitude', 'neighbourhood', 'minimum_nights'],
                           suffixes=('_ltable', '_rtable'))
@@ -128,8 +144,9 @@ def filecsv_label_with_0_type2(data):
     data.rename(columns={'minimum_nights': 'minimum_nights_ltable'}, inplace=True)
     data.insert(27, "minimum_nights_rtable", datasupport, True)
 
-    data = data[(data["host_id_ltable"] != data["host_id_rtable"]) | (data["latitude_ltable"] != data["latitude_rtable"]) |
-            (data["longitude_ltable"] != data["longitude_rtable"])]
+    data = data[
+        (data["host_id_ltable"] != data["host_id_rtable"]) | (data["latitude_ltable"] != data["latitude_rtable"]) |
+        (data["longitude_ltable"] != data["longitude_rtable"])]
 
     data = rename_columuns(data)
 

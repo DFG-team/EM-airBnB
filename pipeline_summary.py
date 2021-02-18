@@ -4,23 +4,35 @@ import os
 
 def start_pipeline_summary(path):
     pd.options.mode.chained_assignment = None  # default='warn'
-    print("pipeline started")
+    print("pipeline_summary deep matcher started")
     dataset_url_amsterdam = 'http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12' \
                             '/visualisations/listings.csv'
     dataset_url_rome = 'http://data.insideairbnb.com/italy/lazio/rome/2021-01-13/visualisations/listings.csv'
-    dataset_url_london = 'http://data.insideairbnb.com/united-kingdom/england/london/2021-01-11/visualisations/listings.csv'
+    dataset_url_london = 'http://data.insideairbnb.com/united-kingdom/england/london/2021-01-11/visualisations' \
+                         '/listings.csv '
     dataset_url_dublin = 'http://data.insideairbnb.com/ireland/leinster/dublin/2021-02-10/visualisations/listings.csv'
+
+    # reading cities csv
     data_amsterdam = pd.read_csv(dataset_url_amsterdam)
     data_rome = pd.read_csv(dataset_url_rome)
+    data_london = pd.read_csv(dataset_url_london)
+    data_dublin = pd.read_csv(dataset_url_dublin)
+
+    # merging cities data frames
     realdata_amsterdam = merge_dataframe(data_amsterdam)
     realdata_rome = merge_dataframe(data_rome)
-    save_file_split(realdata_amsterdam, path)
-    realdata_rome.to_csv(path + 'test_rome.csv', index=False, header=True)
-    dfs = [pd.read_csv(path + 'test.csv'), pd.read_csv(path + 'test_rome.csv')]
-    realdata = pd.concat(dfs, ignore_index=True)
-    realdata.to_csv(path + 'test.csv')
-    visualize_truth_csv(data_amsterdam, path)
+    realdata_london = merge_dataframe(data_london)
+    realdata_dublin = merge_dataframe(data_dublin)
 
+    # split amsterdam data frame for training model
+    save_file_split(realdata_amsterdam, path)
+
+    # saving test_city.csv
+    realdata_rome.to_csv(path + 'test_rome.csv', index=False, header=True)
+    realdata_london.to_csv(path + 'test_london.csv', index=False, header=True)
+    realdata_dublin.to_csv(path + 'test_dublin.csv', index=False, header=True)
+
+    visualize_truth_csv(data_amsterdam, path)
 
 
 def filecsv_label_with_1(data):
