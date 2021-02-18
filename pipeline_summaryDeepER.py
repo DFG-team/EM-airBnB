@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import os
 import gensim.downloader as api
-import models.DeepER as dp
 
 def start_pipeline_with_DeepER(path):
 
@@ -151,9 +150,9 @@ def save_file_split(data, path):
     train, validate, test = train_validate_test_split(data)
     if not os.path.exists('DatasetRomeDeepER'):
         os.makedirs('DatasetRomeDeepER')
-        train.to_csv(path + 'train.csv', index=False, header=True)
-        validate.to_csv(path + 'validate.csv', index=False, header=True)
-        test.to_csv(path + 'test.csv', index=False, header=True)
+    train.to_csv(path + 'train.csv', index=False, header=True)
+    validate.to_csv(path + 'validate.csv', index=False, header=True)
+    test.to_csv(path + 'test.csv', index=False, header=True)
 
 
 def train_validate_test_split(data, train_percent=.6, validate_percent=.2, seed=None):
