@@ -159,9 +159,9 @@ def filecsv_label_with_0_type2(data):
 def merge_dataframe(data):
     frame1 = filecsv_label_with_1(data)
     frame2 = filecsv_label_with_0_type1(data)
-    frame3 = filecsv_label_with_0_type2(data)
+    # frame3 = filecsv_label_with_0_type2(data)
 
-    mainFrame = [frame1, frame2, frame3]
+    mainFrame = [frame1, frame2]
     result = pd.concat(mainFrame)
 
     result['id'] = range(1, len(result) + 1)
