@@ -15,28 +15,33 @@ def start_pipeline_with_DeepER(path):
     dataset_url_london = 'http://data.insideairbnb.com/united-kingdom/england/london/2021-01-11/visualisations' \
                          '/listings.csv '
     dataset_url_dublin = 'http://data.insideairbnb.com/ireland/leinster/dublin/2021-02-10/visualisations/listings.csv'
+    dataset_url_brussels = 'http://data.insideairbnb.com/belgium/bru/brussels/2021-01-23/visualisations/listings.csv'
     # reading cities csv
     data_amsterdam = pd.read_csv(dataset_url_amsterdam)
     data_rome = pd.read_csv(dataset_url_rome)
     data_london = pd.read_csv(dataset_url_london)
     data_dublin = pd.read_csv(dataset_url_dublin)
+    data_brussels = pd.read_csv(dataset_url_brussels)
 
     # merging cities data frames
-    realdata_amsterdam = merge_dataframe(data_amsterdam)
     realdata_rome = merge_dataframe(data_rome)
-    realdata_rome = realdata_rome.sample(frac=1).reset_index(drop=True)
+    realdata_amsterdam = merge_dataframe(data_amsterdam)
+    realdata_amsterdam = realdata_rome.sample(frac=1).reset_index(drop=True)
     realdata_london = merge_dataframe(data_london)
     realdata_london = realdata_london.sample(frac=1).reset_index(drop=True)
     realdata_dublin = merge_dataframe(data_dublin)
     realdata_dublin = realdata_dublin.sample(frac=1).reset_index(drop=True)
+    realdata_brussels = merge_dataframe(data_brussels)
+    realdata_brussels = realdata_brussels.sample(frac=1).reset_index(drop=True)
 
     # split amsterdam data frame for training model
-    save_file_split(realdata_amsterdam, path)
+    save_file_split(realdata_rome, path)
 
     # saving test_city.csv
-    realdata_rome.to_csv(path + 'test_rome.csv', index=False, header=True)
+    realdata_amsterdam.to_csv(path + 'test_amsterdam.csv', index=False, header=True)
     realdata_london.to_csv(path + 'test_london.csv', index=False, header=True)
     realdata_dublin.to_csv(path + 'test_dublin.csv', index=False, header=True)
+    realdata_brussels.to_csv(path + 'test_brussels.csv', index=False, header=True)
     start_model(path)
 
 
