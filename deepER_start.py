@@ -1,4 +1,4 @@
-from NLP_preprocessing import clean_dataset
+from pipeline_preprocessing import preprocessing_pipeline
 import pandas as pd
 import os
 import gensim.downloader as api
@@ -22,11 +22,11 @@ def to_deeper_data(df: pd.DataFrame):
 def start_model(path):
     train_df = pd.read_csv(path + 'train.csv')
     valid_df = pd.read_csv(path + 'validate.csv')
-    test_df = pd.read_csv(path + 'test_dublin.csv')
+    test_df = pd.read_csv(path + 'test_london.csv')
     
-    train_df = clean_dataset(train_df)
-    valid_df = clean_dataset(valid_df)
-    test_df = clean_dataset(test_df)
+    train_df = preprocessing_pipeline(train_df)
+    valid_df = preprocessing_pipeline(valid_df)
+    test_df = preprocessing_pipeline(test_df)
 
     if not os.path.exists('models/glove.6B.50d.txt'):
         word_vectors = api.load("glove-wiki-gigaword-50")
