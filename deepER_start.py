@@ -24,9 +24,9 @@ def start_model(path):
     valid_df = pd.read_csv(path + 'validate.csv')
     test_df = pd.read_csv(path + 'test_amsterdam.csv')
     
-    train_df = preprocessing_pipeline(train_df)
-    valid_df = preprocessing_pipeline(valid_df)
-    test_df = preprocessing_pipeline(test_df)
+    # train_df = preprocessing_pipeline(train_df)
+    # valid_df = preprocessing_pipeline(valid_df)
+    # test_df = preprocessing_pipeline(test_df)
 
     if not os.path.exists('models/glove.6B.50d.txt'):
         word_vectors = api.load("glove-wiki-gigaword-50")
