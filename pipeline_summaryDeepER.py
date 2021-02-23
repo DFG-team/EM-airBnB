@@ -23,7 +23,7 @@ def start_pipeline_with_DeepER(path):
     # merging cities data frames
     realdata_rome = merge_dataframe(data_rome)
     realdata_amsterdam = merge_dataframe(data_amsterdam)
-    realdata_amsterdam = realdata_rome.sample(frac=1).reset_index(drop=True)
+    realdata_amsterdam = realdata_amsterdam.sample(frac=1).reset_index(drop=True)
     realdata_london = merge_dataframe(data_london)
     realdata_london = realdata_london.sample(frac=1).reset_index(drop=True)
     realdata_dublin = merge_dataframe(data_dublin)

@@ -22,7 +22,7 @@ def to_deeper_data(df: pd.DataFrame):
 def start_model(path):
     train_df = pd.read_csv(path + 'train.csv')
     valid_df = pd.read_csv(path + 'validate.csv')
-    test_df = pd.read_csv(path + 'test_london.csv')
+    test_df = pd.read_csv(path + 'test_amsterdam.csv')
     
     train_df = preprocessing_pipeline(train_df)
     valid_df = preprocessing_pipeline(valid_df)
