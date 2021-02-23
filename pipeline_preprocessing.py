@@ -13,6 +13,5 @@ def clean_dataset(raw_dataset):
     
 def preprocessing_pipeline(raw_dataset):
     dataset = clean_dataset(raw_dataset)
-    ## TODO 
     
     return dataset
