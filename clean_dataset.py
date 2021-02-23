@@ -10,8 +10,9 @@ def clean_dataset(raw_dataset):
     cleaned['rtable_reviews_per_month'] = cleaned['rtable_reviews_per_month'].fillna(0)
 
     return cleaned
-    
+
+
 def preprocessing_pipeline(raw_dataset):
     dataset = clean_dataset(raw_dataset)
-    
+
     return dataset

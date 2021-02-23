@@ -1,4 +1,4 @@
-from pipeline_preprocessing import preprocessing_pipeline
+from clean_dataset import preprocessing_pipeline
 import pandas as pd
 import os
 import gensim.downloader as api
