@@ -1,5 +1,4 @@
 import numpy as np
-import tensorflow
 from keras.layers import Input, Embedding, LSTM, Dense, Bidirectional, Lambda
 from keras.models import Model, load_model
 from keras.initializers import Constant
