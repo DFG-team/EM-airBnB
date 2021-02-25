@@ -1,4 +1,4 @@
-# Project 4: Entity Matching applied to AirBnB listings
+# Project: Entity Matching applied to AirBnB listings
 
 This project is focused on implementing state-of-art solutions for Entity Matching problem. We define as entity a real object and we define as entity mention a reference to a real word entity. The goal of Entity Matching EM is to find all possibile pairs of entity mentions between two sets, D and D', which refers to the same real object. 
 The solutions studied and implemented are:
