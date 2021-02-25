@@ -18,7 +18,9 @@ This project requires some specific modules:
 How to use
 ------------
 
-Using an IDE, like vscode or PyCharm, open main.py and run. It will esecute the pipeline related to DeepER. In order to execute the pipeline associated to DeepMatcher just comment ```start_pipeline_with_DeepER("DatasetDeepER\\")``` and uncomment ```start_pipeline_summary("DatasetDeepMatcher\\")```
+Using an IDE, like vscode or PyCharm, open main.py and run. It will esecute the pipeline related to DeepER. In order to execute the pipeline associated to DeepMatcher just comment ```start_pipeline_with_DeepER("DatasetDeepER\\")``` and uncomment ```start_pipeline_summary("DatasetDeepMatcher\\")```.
+
+DeepMatcher implementation is located inside ```DeepMatcher_Train``` folder, there are multiple .ipynb files which can be executed inside Google CoLab.
 
 Maintainers
 ------------
